@@ -1,0 +1,10 @@
+Django==3.1.2
+gunicorn
+psycopg2
+djangorestframework
+drf-yasg
+django-cors-headers
+pycryptodome
+Pillow
+cryptography
+requests

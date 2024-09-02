@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: -
+      POSTGRES_USER: -
+      POSTGRES_PASSWORD: -
+
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 project.wsgi:application
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles  # Сюда копируются статические файлы
+      - media_volume:/app/media
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DEBUG=1  # Убедитесь, что переменная окружения DEBUG настроена правильно
+      - DATABASE_URL=postgres://postgres:123321@db:5432/base1  # Настройка базы данных через переменные окружения
+
+volumes:
+  static_volume:
+  media_volume:
+  postgres_data:
